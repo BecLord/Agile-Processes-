@@ -18,7 +18,9 @@ enum class AppScreen {
     LANDING,
     REGISTER,
     LOGIN,
-    HOME
+    DASHBOARD,
+    VIEW_SCAM_CALL,
+    RESET_PASSWORD
 }
 
 class MainActivity : ComponentActivity() {
@@ -44,12 +46,24 @@ class MainActivity : ComponentActivity() {
                         AppScreen.LOGIN -> LoginScreen(
                             onNavigateToRegister = { currentScreen = AppScreen.REGISTER },
                             onNavigateToSignIn = {
-                                currentScreen = AppScreen.HOME
+                                currentScreen = AppScreen.DASHBOARD
+                            },
+                            onNavigateToForgotPassword = {
+                                currentScreen = AppScreen.RESET_PASSWORD
                             },
                             modifier = Modifier.padding(innerPadding)
                         )
-                        AppScreen.HOME -> HomeScreen(
+                        AppScreen.DASHBOARD -> DashboardScreen(
+                            onNavigateToViewScamCall = { currentScreen = AppScreen.VIEW_SCAM_CALL },
                             onLogout = { currentScreen = AppScreen.LANDING },
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                        AppScreen.VIEW_SCAM_CALL -> ViewScamCallScreen(
+                            onNavigateBack = { currentScreen = AppScreen.DASHBOARD },
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                        AppScreen.RESET_PASSWORD -> ResetPasswordScreen(
+                            onNavigateToLogin = { currentScreen = AppScreen.LOGIN },
                             modifier = Modifier.padding(innerPadding)
                         )
                     }
