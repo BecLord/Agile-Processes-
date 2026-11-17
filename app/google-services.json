@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "975229980099",
+    "project_id": "scam-shield-fa04a",
+    "storage_bucket": "scam-shield-fa04a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975229980099:android:894c233a9e2566a1948176",
+        "android_client_info": {
+          "package_name": "com.example.botdetector"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1WL_hPZ_92RrOmICq_QCrrgnVGpwveuA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
