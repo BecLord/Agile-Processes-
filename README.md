@@ -1,6 +1,6 @@
-# BotDetector: Human Voice Detection
+# Scam Sheild: Human Voice Detection
 
-BotDetector (also referred to as Scam Shield) is an Android application designed to help users identify and manage suspicious or scam calls. The app analyses voice recordings to estimate whether the speaker is a real human or an AI-generated voice, providing a dashboard, call-screening workflow, and local data handling.
+Scam Shield is an Android application designed to help users identify and manage suspicious or scam calls. The app analyses voice recordings to estimate whether the speaker is a real human or an AI-generated voice, providing a dashboard, call-screening workflow, and local data handling.
 
 This project was completed as part of our Agile Process module to learn how Agile project management works in practice.
 
@@ -13,7 +13,7 @@ This project aims to create a barrier between potential cybercriminals and the p
 ## Repository structure
 
 ```text
-BotDetector/
+ScamSheild/
 ├── app/                         # Android application module
 │   ├── src/                     # Kotlin source files, resources, manifest
 │   ├── build.gradle.kts        # Module-level Gradle configuration
