@@ -40,7 +40,7 @@ The project compares:
 
 Both models are evaluated using accuracy, precision, recall, F1-score, and confusion matrices. The best-performing model is integrated into the mobile app.
 
-##Dataset
+## Dataset
 
 The dataset contains genuine human speech and AI-generated voice recordings. Each recording includes its source, licence, consent status, speaker label, collection date, and class label.
 
