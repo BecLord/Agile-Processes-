@@ -1,41 +1,57 @@
-# Agile-Processes-
+# Human Voice Detection: Human or AI?
 
-## SCRUM-33: Transform Raw Data into Features
+A mobile application that analyses voice recordings to estimate whether the speaker is a real human or an AI-generated voice.
 
-### SCRUM-175: Select Feature Extraction Method
+## About
 
-The selected feature extraction method is
-Mel-Frequency Cepstral Coefficients (MFCC).
+Scam Sheild is a mobile application that analyses voice recordings to estimate whether the speaker is a real human or an AI-generated voice.
 
-The project uses the Python librosa library to extract
-13 MFCC coefficients from audio recordings.
+This project was completed as part of our Agile Process module to learn how Agile project management works in practice.
 
-MFCC features represent characteristics of audio
-signals and can be used as input for machine learning models.
+## Problem
 
-The extracted features are saved as NumPy (.npy) files
-inside the features/prepared folder.
+***"Make sure that it is a human behind the phone and not a bot."***
 
-Feature extraction method: MFCC
-Number of coefficients: 13
-Python library: librosa
-Output format: .npy
+This project aims to create a barrier between potential cybercriminals and the person receiving the call by analysing voice recordings and identifying whether the speaker is likely to be human or AI-generated. 
 
-### SCRUM-33: Feature Extraction Results
+## Features
 
-The audio preprocessing and feature extraction tasks were completed successfully.
+- Upload a voice recording for analysis
+- Classify audio as **likely human**, **likely AI-generated**, or **inconclusive**
+- Display a confidence score
+- Compare machine-learning models
+- Evaluate performance on noisy, compressed, and short audio
+- Mobile user accounts, scam-call log, and admin dashboard
 
-- Total labelled audio recordings: 58
-- Human voice recordings: 30
-- AI-generated voice recordings: 28
-- Audio sample rate: 16,000 Hz
-- Feature extraction method: MFCC
-- Number of MFCC coefficients: 13
-- Successfully processed recordings: 58
-- Processing errors: 0
+## How it Works
 
-The extracted features were saved in the features/prepared folder as NumPy (.npy) files.
+1. The user uploads an audio recording.
+2. The app preprocesses the audio and extracts features.
+3. The selected machine-learning model classifies the recording.
+4. The app displays the result and confidence score.
 
-A feature_mapping.csv file was created to link each audio recording to its extracted features and class label.
+The result is an estimate, not proof that a call is a scam.
 
-All 58 labelled recordings were successfully processed and verified.
+## Machine Learning 
+The project compares:
+
+- **1** — uses 
+- **2** — uses 
+
+Both models are evaluated using accuracy, precision, recall, F1-score, and confusion matrices. The best-performing model is integrated into the mobile app.
+
+##Dataset
+
+The dataset contains genuine human speech and AI-generated voice recordings. Each recording includes its source, licence, consent status, speaker label, collection date, and class label.
+
+## Usage
+
+```bash
+# ...
+```
+
+## Team
+
+- Rebecca — Product Owner, Scrum Master (Sprint 3) and Developer
+- Cassandra — Scrum Master (Sprint 1) and Developer
+- Ibrahim — Scrum Master (Sprint 2) and Developer
