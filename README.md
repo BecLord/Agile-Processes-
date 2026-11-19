@@ -75,8 +75,8 @@ ScamSheild/
 
 The project compares:
 
-- **1** — uses 
-- **2** — uses 
+- **Logistics Regression** — uses 
+- **SVM** — uses 
 
 Both models are evaluated using accuracy, precision, recall, F1-score, and confusion matrices. The best-performing model is integrated into the mobile app.
 
