@@ -1,0 +1,9 @@
+
+# Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Audio recordings and generated transcriptions
+dataset/raw/Human/
+dataset/processed/
