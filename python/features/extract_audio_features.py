@@ -7,7 +7,7 @@ import csv
 from pathlib import Path
 
 # Locate the project folder
-project_folder = Path(__file__).resolve().parent.parent
+project_folder = Path(__file__).resolve().parents[2]
 
 # Locate the preprocessed audio recordings
 input_folder = project_folder / "dataset" / "processed"
