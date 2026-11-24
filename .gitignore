@@ -1,0 +1,61 @@
+
+# Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Audio recordings and generated transcriptions
+dataset/raw/Human/
+dataset/processed/
+# Android & Java Build Artifacts
+*.apk
+*.aar
+*.bundle
+*.aab
+*.dex
+*.class
+bin/
+gen/
+out/
+build/
+**/build/
+.gradle/
+.cxx/
+.externalNativeBuild/
+
+# Sensitive & Local Credentials
+local.properties
+app/google-services.json
+*.jks
+*.keystore
+*.pem
+*.key
+
+# IDE & Editor User Data
+.idea/
+.vscode/
+*.iml
+
+# OS & Temp Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.log
+captures/
+.navigation/
+
+# ML Audio Dataset & Extracted Feature Arrays (Voice Data & Binary Models)
+*.wav
+*.npy
+python/dataset/raw/*
+!python/dataset/raw/.gitkeep
+python/dataset/processed/*
+!python/dataset/processed/.gitkeep
+python/features/prepared/*.npy
+python/features/standardised/*.npy
+python/models/exported/*
+!python/models/exported/.gitkeep
