@@ -1,0 +1,177 @@
+
+package com.example.scamshield.screens
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.scamshield.R
+
+private val Pink = Color(0xFFFFE8F6)
+private val DarkPink = Color(0xFFFF72AA)
+
+@Composable
+fun AddScamNumberScreen(
+    onBack: () -> Unit,
+    onSave: (String, String) -> Unit
+) {
+    var phoneNumber by remember { mutableStateOf("") }
+    var reason by remember { mutableStateOf("") }
+    var message by remember { mutableStateOf("") }
+
+    Scaffold(
+        containerColor = Color.White,
+        bottomBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(75.dp)
+                    .background(Pink),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("◷", fontSize = 30.sp)
+                Text("⌂", fontSize = 34.sp, color = DarkPink)
+                Text("⚙", fontSize = 30.sp)
+            }
+        }
+    ) { padding ->
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Image(
+                painter = painterResource(R.drawable.scamlogo),
+                contentDescription = "Scam Shield Logo",
+                modifier = Modifier
+                    .width(220.dp)
+                    .height(90.dp),
+                contentScale = ContentScale.Fit
+            )
+
+            Spacer(modifier = Modifier.height(25.dp))
+
+            Box(
+                modifier = Modifier
+                    .size(110.dp)
+                    .background(Pink, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("☎", fontSize = 50.sp, color = DarkPink)
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "Block a Number",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = "Enter a phone number to add it to your scam block list.",
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(25.dp))
+
+            OutlinedTextField(
+                value = phoneNumber,
+                onValueChange = {
+                    phoneNumber = it
+                    message = ""
+                },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Enter phone number") },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone
+                ),
+                shape = RoundedCornerShape(8.dp)
+            )
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            OutlinedTextField(
+                value = reason,
+                onValueChange = {
+                    reason = it
+                    message = ""
+                },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Reason for reporting") },
+                minLines = 2,
+                shape = RoundedCornerShape(8.dp)
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(
+                onClick = {
+                    val digits = phoneNumber.count { it.isDigit() }
+
+                    when {
+                        digits !in 7..15 ->
+                            message = "Please enter a valid phone number."
+
+                        reason.isBlank() ->
+                            message = "Please enter a reason."
+
+                        else ->
+                            onSave(phoneNumber.trim(), reason.trim())
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Pink,
+                    contentColor = Color.Black
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text("Block Number", fontWeight = FontWeight.SemiBold)
+            }
+
+            TextButton(onClick = onBack) {
+                Text("Back to Block List", color = DarkPink)
+            }
+
+            if (message.isNotEmpty()) {
+                Text(
+                    text = message,
+                    color = Color.Red,
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+        }
+    }
+}
