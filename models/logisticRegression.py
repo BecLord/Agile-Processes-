@@ -3,18 +3,25 @@
 # Classify human and AI-generated voice recordings
 
 from pathlib import Path
-
+import matplotlib.pyplot as plt
 import numpy as np
 import joblib
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import (
+    train_test_split,
+    StratifiedKFold,
+    cross_validate
+)
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import (
     accuracy_score,
     classification_report,
-    confusion_matrix
+    confusion_matrix,
+    make_scorer,
+    recall_score,
+    ConfusionMatrixDisplay
 )
 
 
@@ -81,12 +88,53 @@ model = Pipeline([
 ])
 
 
-# Step 6: Train the model
+# Step 6: Perform 10-fold cross-validation
+
+print("\nSCRUM-192: 10-Fold Cross-Validation")
+
+cv = StratifiedKFold(
+    n_splits=10,
+    shuffle=True,
+    random_state=42
+)
+
+# Evaluation metrics requested by the lecturer
+scoring = {
+    "accuracy": "accuracy",
+    "precision": "precision_macro",
+    "recall": "recall_macro",
+    "f1": "f1_macro",
+    "specificity": make_scorer(
+        recall_score,
+        pos_label=0
+    )
+}
+
+# Cross-validation on training data only
+cv_results = cross_validate(
+    model,
+    X_train,
+    y_train,
+    cv=cv,
+    scoring=scoring
+)
+
+print("\n10-FOLD CROSS-VALIDATION RESULTS")
+
+for metric in scoring:
+    scores = cv_results["test_" + metric]
+
+    print(f"\n{metric.capitalize()}:")
+    print("Fold scores:", scores.round(3))
+    print("Average:", round(scores.mean() * 100, 2), "%")
+    print("Standard deviation:", round(scores.std() * 100, 2), "%")
+
+
+# Step 6B: Train Logistic Regression
 
 model.fit(X_train, y_train)
 
 print("\nLogistic Regression training completed.")
-
 
 # Step 7: Make predictions
 
@@ -112,6 +160,48 @@ print(classification_report(
 print("\nConfusion Matrix:")
 
 print(confusion_matrix(y_test, predictions, labels=[0, 1]))
+
+# Calculate specificity on the held-out test dataset
+# Human = 0, AI-generated = 1
+
+tn, fp, fn, tp = confusion_matrix(
+    y_test,
+    predictions,
+    labels=[0, 1]
+).ravel()
+
+specificity = tn / (tn + fp)
+
+print("\nTest Specificity:", round(specificity * 100, 2), "%")
+
+
+# Create the blue confusion matrix
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test,
+    predictions,
+    labels=[0, 1],
+    display_labels=["Human", "AI-generated"],
+    cmap="Blues",
+    values_format="d"
+)
+
+plt.title("Logistic Regression Confusion Matrix")
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
+plt.tight_layout()
+
+# Save the graph
+
+results_folder = project_folder / "results"
+results_folder.mkdir(parents=True, exist_ok=True)
+
+plt.savefig(
+    results_folder / "logistic_regression_confusion_matrix.png",
+    dpi=300
+)
+
+plt.show()
 
 
 # Step 9: Save the trained model
