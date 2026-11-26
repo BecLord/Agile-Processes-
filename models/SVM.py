@@ -4,17 +4,26 @@
 
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+from sklearn.metrics import ConfusionMatrixDisplay
 import numpy as np
 import joblib
 
-from sklearn.model_selection import train_test_split
+
+from sklearn.model_selection import (
+    train_test_split,
+    StratifiedKFold,
+    cross_validate
+)
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import (
     accuracy_score,
     classification_report,
-    confusion_matrix
+    confusion_matrix,
+    make_scorer,
+    recall_score
 )
 
 
@@ -88,12 +97,54 @@ model = Pipeline([
 ])
 
 
-# Step 6: Train SVM
+# Step 6: Perform 10-fold cross-validation
+
+print("\nSCRUM-193: 10-Fold Cross-Validation")
+
+# Divide the training data into 10 stratified folds
+cv = StratifiedKFold(
+    n_splits=10,
+    shuffle=True,
+    random_state=42
+)
+
+# Define evaluation metrics
+scoring = {
+    "accuracy": "accuracy",
+    "precision": "precision_macro",
+    "recall": "recall_macro",
+    "f1": "f1_macro",
+    "specificity": make_scorer(
+        recall_score,
+        pos_label=0
+    )
+}
+
+# Evaluate the entire pipeline on each fold
+cv_results = cross_validate(
+    model,
+    X_train,
+    y_train,
+    cv=cv,
+    scoring=scoring
+)
+
+print("\n10-FOLD CROSS-VALIDATION RESULTS")
+
+for metric in scoring:
+    scores = cv_results["test_" + metric]
+
+    print(f"\n{metric.capitalize()}:")
+    print("Fold scores:", scores.round(3))
+    print("Average:", round(scores.mean() * 100, 2), "%")
+    print("Standard deviation:", round(scores.std() * 100, 2), "%")
+
+
+# Step 6B: Train SVM using all training samples
 
 model.fit(X_train, y_train)
 
 print("\nSVM training completed.")
-
 
 # Step 7: Predict the test recordings
 
@@ -124,6 +175,45 @@ print(confusion_matrix(
     labels=[0, 1]
 ))
 
+# Calculate specificity on the held-out test dataset
+# Human = 0 (negative), AI-generated = 1 (positive)
+
+tn, fp, fn, tp = confusion_matrix(
+    y_test,
+    predictions,
+    labels=[0, 1]
+).ravel()
+
+specificity = tn / (tn + fp)
+
+print("\nTest Specificity:", round(specificity * 100, 2), "%")
+
+# Create a coloured confusion matrix
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test,
+    predictions,
+    labels=[0, 1],
+    display_labels=["Human", "AI-generated"],
+    cmap="Blues",
+    values_format="d"
+)
+
+plt.title("SVM Confusion Matrix")
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
+plt.tight_layout()
+
+# Save the graph for the lecturer's report
+results_folder = project_folder / "results"
+results_folder.mkdir(parents=True, exist_ok=True)
+
+plt.savefig(
+    results_folder / "svm_confusion_matrix.png",
+    dpi=300
+)
+
+plt.show()
 
 # Step 9: Save the trained model
 
